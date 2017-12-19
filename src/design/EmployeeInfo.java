@@ -2,7 +2,7 @@ package design;
 
 import java.util.Scanner;
 
-public class EmployeeInfo{
+public class EmployeeInfo extends EmpAbstarct {
 	
  /*This class can be implemented from Employee interface then add additional methods in EmployeeInfo class.
  * Also, Employee interface can be implemented into an abstract class.So create an Abstract class
@@ -18,7 +18,12 @@ public class EmployeeInfo{
 	/*
 	 * declare few static and final fields and some non-static fields
 	 */
+	private String name;
+	private int employeeID, employeeAge;
+	private double salary;
+	private int performance;
 	static String companyName;
+	static String address;
 	
 	/*
 	 * You must implement the logic for below 2 methods and 
@@ -31,10 +36,11 @@ public class EmployeeInfo{
 	 * Must implement below constructor.
 	 */
 	public EmployeeInfo(int employeeId){
-		
+		this.employeeID = employeeId;
 	}
     public EmployeeInfo(String name, int employeeId){
-		
+		this.name = name;
+		this.employeeID = employeeId;
 	}
 	
 	/*
@@ -45,8 +51,21 @@ public class EmployeeInfo{
 	 * So you probably need to send 2 arguments.
 	 * 
 	 */
-	public static int calculateEmployeeBonus(){
-		int total=0;
+	public static double calculateEmployeeBonus(double salary, int performance){
+		double total=0;
+		if(performance == 5 ){
+			total = salary + (salary * .10);
+		}else if(performance == 4) {
+			total = salary + (salary * .08);
+		}else if(performance == 3 ) {
+			total = salary + (salary * 0.6);
+		}else if(performance == 2){
+			total = salary + (salary * 0.4);
+		}else if(performance == 1){
+			total = salary + (salary * 0.2);
+		}else{
+			total = total;
+		}
 		return total;
 	}
 	
@@ -71,6 +90,45 @@ public class EmployeeInfo{
 
 		return total;
 	}
+
+	@Override
+	public void employeeService() {
+
+	}
+
+	@Override
+	public int employeeId() {
+		return 0;
+	}
+
+	@Override
+	public String employeeName(String name) {
+		System.out.println(name);
+		return null;
+	}
+
+	@Override
+	public void assignDepartment() {
+
+	}
+
+	@Override
+	public int calculateSalary() {
+		return 0;
+	}
+
+	@Override
+	public void benefitLayout() {
+
+	}
+
+	@Override
+	public void employeeOffice() {
+		System.out.println("Employee's ID");
+	}
+
+
+
 	private static class DateConversion {
 
 		public DateConversion(Months months){}

@@ -1,5 +1,6 @@
 package parser;
 
+import databases.ConnectDB;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -33,44 +34,60 @@ public class ProcessStudentInfo {
 		 * Use any databases[MongoDB, Oracle, MySql] to store data and to retrieve data.
 		 *
 		 */
+
 			public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+				ConnectDB connectDB = new ConnectDB();
 				//Path of XML data to be read.
 				String pathSelenium  = System.getProperty("user.dir") +"/src/parser/selenium.xml";
 				String pathQtp = System.getProperty("user.dir") + "/src/parser/qtp.xml";
 				String tag = "id";
 
 				//Declare a Map with List<String> into it.
-				Map<String,List<String>> list = new LinkedHashMap<String,List<String>>();
+				Map<String,List<Student>> list = new LinkedHashMap<String,List<Student>>();
 				
 				/*Declare 2 ArrayList with Student data type to store Selenium student into one of the ArrayList and
 				  Qtp student into another ArrayList. */
-				
 				List<Student> seleniumStudents = new ArrayList<Student>();
 				List<Student> qtpStudents = new ArrayList<Student>();
 				
 				//Create XMLReader object.
 				XmlReader xmlReader = new XmlReader();
-				
-				
+
 				//Parse Data using parseData method and then store data into Selenium ArrayList.
 				seleniumStudents = xmlReader.parseData(tag, pathSelenium);
 
 				//Parse Data using parseData method and then store data into Qtp ArrayList.
+				qtpStudents = xmlReader.parseData(tag, pathQtp);
 				
 				//add Selenium ArrayList data into map.
+				list.put("Selenium Students", seleniumStudents);
 			
 				//add Qtp ArrayList data into map.
-		
+				list.put("QTP Students", seleniumStudents);
 		      	
 				//Retrieve map data and display output.
+				for(Map.Entry<String, List<Student>>m: list.entrySet()){
+					}
 
 				//Store Qtp data into Qtp table in Database
+				connectDB.InsertStudentFromArrayListToMySql(qtpStudents, "QTP", "Students");
 
 				//Store Selenium data into Selenium table in Database
+				connectDB.InsertStudentFromArrayListToMySql(seleniumStudents, " Selenium", "Students");
 
 				//Retrieve Selenium and Qtp students from Database
+				try {
+					connectDB.readDataBase("QTP", "Students");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
-				
+				try {
+					connectDB.readDataBase("Selenium", "Students");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			}
 
 }

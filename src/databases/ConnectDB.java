@@ -8,6 +8,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.connection.*;
 import org.bson.Document;
+import parser.Student;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -149,11 +150,30 @@ public class ConnectDB {
         return data;
     }
 
-    public void InsertDataFromArrayListToMySql(List<Object> list,String tableName, String columnName)
+    public void InsertDataFromArrayListToMySql(ArrayList<Object> arrayList,String tableName, String columnName)
     {
         try {
             connectToMySql();
-            for(Object st:list){
+            for(Object st:arrayList){
+                ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
+                ps.setObject(1,st);
+                ps.executeUpdate();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void InsertStudentFromArrayListToMySql(List<Student> arrayList, String tableName, String columnName)
+    {
+        try {
+            connectToMySql();
+            for(Object st:arrayList){
                 ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
                 ps.setObject(1,st);
                 ps.executeUpdate();
